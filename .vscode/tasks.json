@@ -1,0 +1,42 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build",
+            "type": "shell",
+            "command": "make",
+            "args": [
+                "clean",
+                "all"
+            ]
+        },
+        {
+            "label": "Flash",
+            "type": "shell",
+            "command": "avrdude",
+            "args": [
+                "-c", "serialupdi",
+                "-P", "COM3",
+                "-b", "115200",
+                "-p", "t1616",
+                "-U", "flash:w:out/main.hex:i"
+            ]
+        },
+        {
+            "label": "Pull",
+            "type": "shell",
+            "command": "git",
+            "args": [
+                "pull", "origin", "main"
+            ]
+        },
+        {
+            "label": "Reset",
+            "type": "shell",
+            "command": "git",
+            "args": [
+                "reset", "--hard", "origin/main"
+            ]
+        },
+    ]
+}

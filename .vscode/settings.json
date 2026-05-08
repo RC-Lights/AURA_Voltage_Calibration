@@ -1,0 +1,34 @@
+{
+    "VsCodeTaskButtons.showCounter": true,
+    "VsCodeTaskButtons.tasks": [
+      {
+        "label": "🛠️ Build",
+        "task": "Build",
+        "tooltip": "🛠️ Start the \"build\" task"
+      },
+      {
+        "label": "🚀 Flash",
+        "task": "Flash",
+        "tooltip": "🧹 Start a \"flash\" task"
+      },
+      {
+        "label": "⬇️ Pull",
+        "task": "Pull",
+        "tooltip": "📥 Start a \"pull\" task"
+      },
+      {
+        "label": "🔁 Reset",
+        "task": "Reset",
+        "tooltip": "📥 Start a \"reset\" task"
+      }
+    ],
+    "files.associations": {
+      "locale": "c",
+      "driver_voltagetemperature.h": "c",
+      "group.h": "c",
+      "mode.h": "c",
+      "config.h": "c",
+      "io.h": "c",
+      "iotn1616.h": "c"
+    }
+  }

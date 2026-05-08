@@ -1,0 +1,38 @@
+{
+    "configurations": [
+        {
+            "name": "OSX",
+            "includePath": [
+                "${workspaceFolder}/toolchain/osx/avr/avr/include/",
+                "${workspaceFolder}/include/",
+                "${workspaceFolder}/include/drivers/",
+                "${workspaceFolder}/include/lib/"
+            ],
+            "cStandard": "c17",
+            "cppStandard": "c++14"
+        },
+        {
+            "name": "Windows",
+            "includePath": [
+                "${workspaceFolder}/toolchain/windows/avr/avr/include/",
+                "${workspaceFolder}/include/",
+                "${workspaceFolder}/include/drivers/",
+                "${workspaceFolder}/include/lib/"
+            ],
+            "cStandard": "c17",
+            "cppStandard": "c++14"
+        },
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/toolchain/linux/avr/avr/include/",
+                "${workspaceFolder}/include/",
+                "${workspaceFolder}/include/drivers/",
+                "${workspaceFolder}/include/lib/"
+            ],
+            "cStandard": "c17",
+            "cppStandard": "c++14"
+        }
+    ],
+    "version": 4
+}
