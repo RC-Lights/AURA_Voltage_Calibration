@@ -31,11 +31,16 @@
  */
 #define VOLTAGE_RANGE_WINDOW                            ((uint16_t) 4)
 
-/* Grundlicht und Blinkspitze fuer die Kalibrierung.
- * Beide Werte laufen fest in Gear0.
+/* Konstante Haupt-LED-Helligkeit fuer die Kalibrierung.
+ * Der Wert laeuft fest in Gear1.
  */
-#define VOLTAGE_BASE_DAC                                ((uint8_t)  50)
-#define VOLTAGE_FLASH_DAC                               ((uint8_t) 200)
+#define VOLTAGE_MAIN_DAC                                ((uint8_t) 80)
+
+/* Secondary-Blinkspitze fuer die Spannungsfenster.
+ * 0 Blinks bedeutet: Secondary aus, Haupt-LED bleibt konstant an.
+ */
+#define VOLTAGE_SECONDARY_FLASH_DAC                     ((uint8_t) 50)
+#define VOLTAGE_SECONDARY_FLASH_GEAR                    ((uint8_t) 10)
 
 /* Blink-Timing.
  * Einheit: 32-ms-Ticks

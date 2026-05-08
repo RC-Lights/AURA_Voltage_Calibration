@@ -12,6 +12,7 @@ extern driverBoost_boost_t boost;
 
 void driverBoost_init(void);
 void driverBoost_setGear0Raw(uint8_t raw);
+void driverBoost_setGear1Raw(uint8_t raw);
 void driverBoost_turnOff(void);
 
 #endif

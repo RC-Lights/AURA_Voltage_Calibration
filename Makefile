@@ -34,6 +34,7 @@ TARGET          =   out/main
 SOURCES         =   src/main.c \
                     drivers/driver_system.c \
                     drivers/driver_boost.c \
+                    drivers/driver_secondary.c \
                     drivers/driver_voltageTemperature.c
 
 all: $(TARGET).hex

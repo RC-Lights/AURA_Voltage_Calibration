@@ -1,5 +1,6 @@
 #include "driver_system.h"
 #include "driver_boost.h"
+#include "driver_secondary.h"
 #include "driver_voltageTemperature.h"
 #include "config.h"
 #include <avr/interrupt.h>
@@ -28,9 +29,11 @@ int main(void) {
     cli();
     driverSystem_init();
     driverBoost_init();
+    driverSecondary_init();
     driverVoltageTemperature_init();
     sei();
 
+    driverBoost_setGear1Raw(VOLTAGE_MAIN_DAC);
     calibration.blinkCount = calibrationBlinkCountFromVoltage(voltageTemperature.voltage);
     calibrationStartBurst();
 
@@ -73,12 +76,12 @@ static uint8_t calibrationBlinkCountFromVoltage(uint16_t voltage) {
 
 static void calibrationSetBaseOutput(void) {
 
-    driverBoost_setGear0Raw(VOLTAGE_BASE_DAC);
+    driverSecondary_turnOff();
 }
 
 static void calibrationSetFlashOutput(void) {
 
-    driverBoost_setGear0Raw(VOLTAGE_FLASH_DAC);
+    driverSecondary_setRaw(VOLTAGE_SECONDARY_FLASH_DAC, VOLTAGE_SECONDARY_FLASH_GEAR);
 }
 
 static void calibrationStartBurst(void) {
