@@ -16,7 +16,7 @@
             "command": "avrdude",
             "args": [
                 "-c", "serialupdi",
-                "-P", "COM3",
+                "-P", "COM4",
                 "-b", "115200",
                 "-p", "t1616",
                 "-U", "flash:w:out/main.hex:i"

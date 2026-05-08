@@ -12,7 +12,7 @@
  * Standardwert fuer 1,1-V-Referenz und 10-Bit-ADC: 112530
  */
 #define VOLTAGE_SCALE_NUMERATOR                         ((uint32_t) 112530)
-#define VOLTAGE_OFFSET                                  ((int16_t)  0)
+#define VOLTAGE_OFFSET                                  ((int16_t)  27)
 
 /* Messintervall.
  * Einheit: 32-ms-Ticks
@@ -41,7 +41,7 @@
  * Einheit: 32-ms-Ticks
  */
 #define VOLTAGE_FLASH_ON_TICKS                          ((uint8_t)  2)
-#define VOLTAGE_FLASH_OFF_TICKS                         ((uint8_t)  2)
+#define VOLTAGE_FLASH_OFF_TICKS                         ((uint8_t)  1)
 #define VOLTAGE_BURST_PAUSE_TICKS                       ((uint8_t) 12)
 
 /* Kalibrier-Stufen von oben nach unten.

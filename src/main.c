@@ -6,7 +6,6 @@
 #include <stdint.h>
 
 typedef struct {
-    uint8_t bandIndex;
     uint8_t blinkCount;
     uint8_t blinkIndex;
     uint8_t flashOn;
@@ -18,7 +17,7 @@ static const uint8_t VOLTAGE_BLINKS[VOLTAGE_PATTERN_COUNT] = VOLTAGE_PATTERN_BLI
 
 static calibration_state_t calibration = {0};
 
-static uint8_t calibrationBandIndexFromVoltage(uint16_t voltage);
+static uint8_t calibrationBlinkCountFromVoltage(uint16_t voltage);
 static void calibrationSetBaseOutput(void);
 static void calibrationSetFlashOutput(void);
 static void calibrationStartBurst(void);
@@ -32,8 +31,7 @@ int main(void) {
     driverVoltageTemperature_init();
     sei();
 
-    calibration.bandIndex = calibrationBandIndexFromVoltage(voltageTemperature.voltage);
-    calibration.blinkCount = VOLTAGE_BLINKS[calibration.bandIndex];
+    calibration.blinkCount = calibrationBlinkCountFromVoltage(voltageTemperature.voltage);
     calibrationStartBurst();
 
     while (1) {
@@ -41,13 +39,12 @@ int main(void) {
             driverVoltageTemperature_spin();
 
             if (voltageTemperature.ready) {
-                uint8_t newBandIndex;
+                uint8_t newBlinkCount;
 
                 voltageTemperature.ready = 0;
-                newBandIndex = calibrationBandIndexFromVoltage(voltageTemperature.voltage);
-                if (newBandIndex != calibration.bandIndex) {
-                    calibration.bandIndex = newBandIndex;
-                    calibration.blinkCount = VOLTAGE_BLINKS[newBandIndex];
+                newBlinkCount = calibrationBlinkCountFromVoltage(voltageTemperature.voltage);
+                if (newBlinkCount != calibration.blinkCount) {
+                    calibration.blinkCount = newBlinkCount;
                     calibrationStartBurst();
                 }
             }
@@ -58,18 +55,20 @@ int main(void) {
     }
 }
 
-static uint8_t calibrationBandIndexFromVoltage(uint16_t voltage) {
+static uint8_t calibrationBlinkCountFromVoltage(uint16_t voltage) {
 
     for (uint8_t index = 0; index < VOLTAGE_PATTERN_COUNT; index++) {
         uint16_t lowerBound = (VOLTAGE_VALUES[index] > VOLTAGE_RANGE_WINDOW)
                             ? (VOLTAGE_VALUES[index] - VOLTAGE_RANGE_WINDOW)
                             : 0;
-        if (voltage >= lowerBound) {
-            return index;
+
+        /* Blink only inside the calibration window below each threshold. */
+        if ((voltage <= VOLTAGE_VALUES[index]) && (voltage >= lowerBound)) {
+            return VOLTAGE_BLINKS[index];
         }
     }
 
-    return (VOLTAGE_PATTERN_COUNT - 1);
+    return 0;
 }
 
 static void calibrationSetBaseOutput(void) {
@@ -85,12 +84,24 @@ static void calibrationSetFlashOutput(void) {
 static void calibrationStartBurst(void) {
 
     calibration.blinkIndex = 0;
+    if (calibration.blinkCount == 0) {
+        calibration.flashOn = 0;
+        calibration.ticksDelay = 0;
+        calibrationSetBaseOutput();
+        return;
+    }
+
     calibration.flashOn = 1;
     calibration.ticksDelay = VOLTAGE_FLASH_ON_TICKS;
     calibrationSetFlashOutput();
 }
 
 static void calibrationSpinPattern(void) {
+
+    if (calibration.blinkCount == 0) {
+        calibrationSetBaseOutput();
+        return;
+    }
 
     if (calibration.ticksDelay) {
         calibration.ticksDelay--;
@@ -109,6 +120,10 @@ static void calibrationSpinPattern(void) {
             calibration.ticksDelay = VOLTAGE_BURST_PAUSE_TICKS;
         }
         return;
+    }
+
+    if (calibration.blinkIndex >= calibration.blinkCount) {
+        calibration.blinkIndex = 0;
     }
 
     calibration.flashOn = 1;
